@@ -88,7 +88,8 @@ body {
 #app.view-mixtape #mixtape-view {
   display: flex;
   opacity: 1;
-  transform: scale(1.02);
+  transform: none; /* prevents iPhone clippiing */
+  /* transform: scale(1.02); */
 }
 
 /* hide others */
@@ -272,6 +273,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
   max-width: 480px;
   margin: 0 auto;
   min-height: 0; /* allows inner panels to scroll properly */
@@ -286,6 +288,28 @@ body {
   border-radius: 14px;
   padding: 8px 10px;
   border: 1px solid rgba(255, 255, 255, 0.12); /* subtle panel outline */
+}
+
+.mixtape-select-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.mixtape-select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.75;
+  font-size: 14px;
+}
+
+#mixtape-playlist-select {
+  width: 100%;
+  padding-right: 28px; /* room for the arrow */
 }
 
 /* Top panel (Mix info) auto size; middle & bottom panels share remaining space */
