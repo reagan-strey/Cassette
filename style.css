@@ -299,17 +299,18 @@ body {
 .mixtape-select-wrap::after {
   content: "▾";
   position: absolute;
-  right: 12px;
+  right: 12px; /* May need to increase with larger drop-down arrow */
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  opacity: 0.75;
-  font-size: 14px;
+  opacity: 0.9;
+  font-size: 18px; /* Mix playlist drop-down arrow size */
+  line-height: 1; /* Keep it vertically tidy */
 }
 
 #mixtape-playlist-select {
   width: 100%;
-  padding-right: 28px; /* room for the arrow */
+  padding-right: 28px; /* room for the arrow - May need to increase with larger drop-down arrow */
 }
 
 /* Top panel (Mix info) auto size; middle & bottom panels share remaining space */
@@ -432,12 +433,17 @@ body {
 
 .mixtape-search-row {
   display: flex;
+  align-items: center;
   gap: 6px;
   margin-top: 6px;
+  flex-wrap: nowrap;   /* keep Search + Clear on same row */
+  min-width: 0;        /* allows children to shrink instead of overflow */
 }
+
 
 .mixtape-search-row input {
   flex: 1;
+  min-width: 0;
   padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -453,6 +459,14 @@ body {
 .mixtape-clear-btn {
   font-size: 11px;
   padding-inline: 10px;
+}
+
+.mixtape-search-row .nav-pill,
+.mixtape-search-row .mixtape-clear-btn {
+  flex: 0 0 auto;
+  min-width: 62px;
+  padding: 6px 10px;
+  font-size: 12px;
 }
 
 /* Result / playlist items (unchanged styling, just reused) */
@@ -690,6 +704,10 @@ body {
     justify-content: center;
     padding-top: 8vh;
     padding-bottom: 18vh;
+  }
+
+  .mixtape-wrapper {
+    max-width: 100%; /* Use full screen width */
   }
 
 }
