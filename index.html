@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cassette Rack</title>
+
+    <!-- iOS “Add to Home Screen” support -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Cassette Rack" />
+
+    <!-- iPhone-first viewport -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app" class="view-home">
+      <header class="app-header">
+        <div class="app-title">Strey Cassette Rack</div>
+        <div class="app-subtitle">
+          Select a genre and album to open in Spotify, or Mix your own!
+        </div>
+      </header>
+
+      <main class="app-main">
+        <!-- HOME VIEW: full wall -->
+        <section id="home-view" class="view">
+          <div class="shelf-wrapper home-shelf-wrapper">
+            <div id="home-shelf" class="shelf"></div>
+          </div>
+        </section>
+
+        <!-- GENRE VIEW: zoomed column with neighbors -->
+        <section id="genre-view" class="view">
+          <div class="shelf-wrapper genre-shelf-wrapper">
+            <div id="genre-shelf" class="shelf"></div>
+          </div>
+        </section>
+
+        <!-- ALBUM VIEW: cassette face carousel -->
+        <section id="album-view" class="view">
+          <div class="album-stage">
+            <div id="album-strip" class="album-strip"></div>
+          </div>
+        </section>
+
+        <!-- MIX TAPE VIEW: Spotify search + local mixes -->
+        <section id="mixtape-view" class="view">
+          <div class="mixtape-wrapper">
+            <!-- Panel 1: Mix Tape (playlist selector + actions) -->
+            <div class="mixtape-panel mixtape-panel--mix">
+              <div class="mixtape-header-row">
+                <div class="mixtape-title">Mix Tape</div>
+              </div>
+              
+              <div class="mixtape-playlist-row">
+                <label
+                  for="mixtape-playlist-select"
+                  class="mixtape-playlist-label"
+                >
+                  Mix:
+                </label>
+                <select id="mixtape-playlist-select"></select>
+              </div>
+              
+              <div class="mixtape-playlist-actions">
+                <button
+                  type="button"
+                  id="mixtape-new-playlist"
+                  class="nav-pill mixtape-small-btn"
+                >
+                  New
+                </button>
+                <button
+                  type="button"
+                  id="mixtape-rename-playlist"
+                  class="nav-pill mixtape-small-btn"
+                >
+                  Rename
+                </button>
+                <button
+                  type="button"
+                  id="mixtape-delete-playlist"
+                  class="nav-pill mixtape-small-btn"
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  id="mixtape-save-playlist"
+                  class="nav-pill primary-pill mixtape-small-btn"
+                >
+                  Save to Spotify
+                </button>
+              </div>
+
+              <div class="mixtape-summary">
+                <span id="mixtape-track-count">0 tracks</span>
+                <span class="mixtape-dot">•</span>
+                <span id="mixtape-total-duration">0:00</span>
+              </div>
+            </div>
+
+            <!-- Panel 2: Current Tracks -->
+            <div class="mixtape-panel mixtape-panel--tracks">
+              <div class="mixtape-section-header">Current Tracks</div>
+              <div id="mixtape-tracks" class="mixtape-scroll">
+                <!-- playlist items injected here -->
+              </div>
+            </div>
+
+            <!-- Panel 3: Search -->
+            <div class="mixtape-panel mixtape-panel--search">
+              <div class="mixtape-section-header mixtape-search-header">
+                <span>Search</span>
+              </div>
+
+              <form id="mixtape-search-form" class="mixtape-search-row">
+                <input
+                  id="mixtape-query"
+                  type="text"
+                  placeholder="Search songs, artists, or albums…"
+                  autocomplete="off"
+                />
+                <button type="submit" class="nav-pill primary-pill">
+                  Search
+                </button>
+                <button
+                  type="button"
+                  id="mixtape-clear"
+                  class="nav-pill mixtape-clear-btn"
+                >
+                  Clear
+                </button>
+              </form>
+
+              <div id="mixtape-results" class="mixtape-scroll">
+                <!-- search results injected here -->
+              </div>
+            </div>
+
+            <!-- Shared audio element for 30s previews -->
+            <audio id="mixtape-audio" preload="none"></audio>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Cassette pull-out / frame-sequence overlay -->
+      <div id="cassette-overlay" class="cassette-overlay" style="display: none">
+        <img id="cassette-frame" class="cassette-frame" alt="" />
+      </div>
+
+      <!-- BOTTOM NAVIGATION BAR -->
+      <footer class="nav-bar">
+        <!-- Home nav: genre buttons -->
+        <div id="home-nav" class="nav-row">
+          <button class="nav-pill home-genre-btn" data-genre-id="hiphop">
+            Hip Hop
+          </button>
+          <button class="nav-pill home-genre-btn" data-genre-id="poprock">
+            Pop / Rock
+          </button>
+          <button class="nav-pill home-genre-btn" data-genre-id="rock">
+            Rock
+          </button>
+          <button class="nav-pill home-genre-btn" data-genre-id="metal">
+            Metal
+          </button>
+          <button class="nav-pill home-genre-btn" data-genre-id="country">
+            Country
+          </button>
+        </div>
+
+        <!-- Genre nav: arrows + back -->
+        <div id="genre-nav" class="nav-row">
+          <button id="genre-prev" class="nav-pill">&lt;</button>
+          <button id="genre-back" class="nav-pill">Back</button>
+          <button id="genre-next" class="nav-pill">&gt;</button>
+        </div>
+
+        <!-- Album nav: arrows + back + play/mix -->
+        <div id="album-nav" class="nav-row">
+          <button id="album-prev" class="nav-pill">&lt;</button>
+          <button id="album-back" class="nav-pill">Back</button>
+          <button id="album-play" class="nav-pill primary-pill">Play</button>
+          <button id="album-next" class="nav-pill">&gt;</button>
+        </div>
+
+        <!-- Mix Tape nav: back only -->
+        <div id="mixtape-nav" class="nav-row">
+          <button id="mixtape-back" class="nav-pill">Back</button>
+        </div>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

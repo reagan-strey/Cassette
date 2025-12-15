@@ -1,0 +1,693 @@
+/* ===== RESET / BASE ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* app manages its own scrolling */
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    sans-serif;
+  background: #050509;
+  color: #f5f5f5;
+}
+
+/* ===== MAIN APP LAYOUT ===== */
+
+#app {
+  height: 100svh; /* iPhone-stable viewport height */
+  min-height: 100vh; /* fallback */
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at top, #15151b 0, #050509 55%);
+  color: #f5f5f5;
+}
+
+.app-header {
+  padding: 12px 16px 4px;
+  text-align: center;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.app-subtitle {
+  margin-top: 2px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 4px 8px 0;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+}
+
+/* ===== VIEWS ===== */
+
+.view {
+  flex: 1;
+  display: none;
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  min-height: 0; /* allow inner flex children (like mixtape) to scroll */
+}
+
+/* which view is active? */
+#app.view-home #home-view {
+  display: flex;
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+#app.view-genre #genre-view {
+  display: flex;
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+#app.view-album #album-view {
+  display: flex;
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+#app.view-mixtape #mixtape-view {
+  display: flex;
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+/* hide others */
+#app.view-home #genre-view,
+#app.view-home #album-view,
+#app.view-home #mixtape-view,
+#app.view-genre #home-view,
+#app.view-genre #album-view,
+#app.view-genre #mixtape-view,
+#app.view-album #home-view,
+#app.view-album #genre-view,
+#app.view-album #mixtape-view,
+#app.view-mixtape #home-view,
+#app.view-mixtape #genre-view,
+#app.view-mixtape #album-view {
+  display: none;
+}
+
+/* ===== SHELVES (HOME + GENRE) ===== */
+
+.shelf-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+/* HOME: full rack */
+.home-shelf-wrapper {
+  padding-top: 180px;  /* Use to control Home View vertical alignment */
+}
+
+#home-shelf {
+  display: flex;
+  gap: 0;
+}
+
+#home-shelf .genre-column {
+  transform-origin: top center;
+}
+
+/* GENRE: active + neighbors */
+.genre-shelf-wrapper {
+  padding: 40px 0 0;
+}
+
+#genre-shelf {
+  display: flex;
+  gap: 0;
+  transform: translateX(var(--shelf-offset, 0px));
+  transition: transform 0.25s ease-out;
+}
+
+/* Base genre column */
+.genre-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+#genre-shelf .genre-column {
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+/* Column headers */
+.genre-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.genre-name {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Album lists */
+.album-list {
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+}
+
+.album-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Spines */
+.album-spine {
+  margin-bottom: 1px;
+  cursor: pointer;
+  transition: transform 0.08s ease-out;
+}
+
+.album-spine img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.album-spine:active {
+  transform: scale(0.98);
+}
+
+/* ===== ALBUM VIEW (FACE CAROUSEL) ===== */
+
+.album-stage {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .album-stage {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
+.album-strip {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transform: translateX(var(--album-offset, 0px));
+  transition: transform 260ms ease-out;
+  gap: 16px;
+}
+
+.album-card {
+  flex: 0 0 60vw;
+  max-width: 360px;
+  opacity: 0.4;
+  transform: scale(0.9);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  cursor: pointer;
+}
+
+.album-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.album-card.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 480px) {
+  .album-card {
+    max-height: 65vh;
+    width: auto;
+  }
+
+  .album-card.active {
+    transform: scale(1.02);
+  }
+}
+
+/* ===== MIX TAPE VIEW ===== */
+
+#mixtape-view {
+  display: flex; /* make this view a flex column */
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* critical: allows inner flex children to shrink/scroll */
+  padding: 12px 10px 4px;
+}
+
+.mixtape-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 0; /* allows inner panels to scroll properly */
+}
+
+/* Generic panel styling */
+
+.mixtape-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12); /* subtle panel outline */
+}
+
+/* Top panel (Mix info) auto size; middle & bottom panels share remaining space */
+
+.mixtape-panel--mix {
+  flex: 0 0 auto;
+}
+
+.mixtape-panel--tracks,
+.mixtape-panel--search {
+  flex: 1;
+  min-height: 0; /* critical for inner scroll on iPhone */
+}
+
+/* Mix header row */
+
+.mixtape-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.mixtape-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Playlist selector row */
+
+.mixtape-playlist-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.mixtape-playlist-label {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+#mixtape-playlist-select {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.4);
+  color: #f5f5f5;
+  font-size: 12px;
+}
+
+/* Playlist actions row */
+
+.mixtape-playlist-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  justify-content: flex-end; /* right-align buttons */
+}
+
+.mixtape-small-btn {
+  font-size: 11px;
+  padding: 4px 8px;
+  min-width: 0;
+}
+
+/* Summary line */
+
+.mixtape-summary {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.mixtape-dot {
+  margin: 0 4px;
+}
+
+/* Section headers */
+
+.mixtape-section-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: 4px;
+
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.22); /* thin divider line below Current Tracks and Search */
+}
+
+/* Scrollable content inside each panel */
+
+.mixtape-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: 2px;
+  padding-bottom: 4px;
+}
+
+.mixtape-results-empty {
+  font-size: 12px;
+  opacity: 0.7;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Search header + row */
+
+.mixtape-search-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mixtape-search-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.mixtape-search-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.4);
+  color: #f5f5f5;
+  font-size: 16px;
+}
+
+.mixtape-search-row input::placeholder {
+  color: rgba(245, 245, 245, 0.55);
+}
+
+.mixtape-clear-btn {
+  font-size: 11px;
+  padding-inline: 10px;
+}
+
+/* Result / playlist items (unchanged styling, just reused) */
+
+.mixtape-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 6px;
+}
+
+.mixtape-item.clickable {
+  cursor: pointer;
+}
+
+.mixtape-item.clickable:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mixtape-thumb {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #222;
+}
+
+.mixtape-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mixtape-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.mixtape-track {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.mixtape-meta {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+/* Buttons inside rows */
+
+.mixtape-actions {
+  display: flex;
+  flex-direction: row; /* side-by-side instead of stacked */
+  gap: 4px;
+}
+
+.mixtape-actions .nav-pill {
+  font-size: 10px;
+  padding: 3px 6px;
+  min-width: 0;
+}
+
+.mixtape-open {
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.mixtape-preview-btn {
+  min-width: 32px;
+}
+
+/* Playlist track row tweaks */
+
+.mixtape-playlist-item {
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.mixtape-playlist-item .mixtape-meta {
+  font-size: 10px;
+}
+
+
+/* ===== NAV BAR ===== */
+
+.nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  padding: 12px 18px calc(env(safe-area-inset-bottom, 25px) + 22px);
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 999;
+}
+
+.nav-row {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* which nav row is visible? */
+
+#app.view-home #home-nav {
+  display: flex;
+}
+
+#app.view-genre #genre-nav {
+  display: flex;
+}
+
+#app.view-album #album-nav {
+  display: flex;
+}
+
+#app.view-mixtape #mixtape-nav {
+  display: flex;
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* keep arrows but fade + disable */
+.nav-pill:disabled {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+.nav-pill:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.primary-pill {
+  background: #f5f5f5;
+  color: #050509;
+}
+
+/* ===== FRAME-ANIMATION OVERLAY ===== */
+
+.cassette-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.cassette-frame {
+  position: absolute;
+  display: block;
+  width: 100px;
+  height: auto;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+/* ===== MOBILE LAYOUT (IPHONE-FIRST) ===== */
+
+@media (max-width: 480px) {
+  #home-view {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .home-shelf-wrapper {
+    padding-top: 60px;
+  }
+
+  #home-shelf {
+    transform: scale(0.82);
+    transform-origin: top center;
+    gap: 0;
+  }
+
+  #home-shelf .genre-column {
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    margin: 0 -1px;
+    transform-origin: top center;
+  }
+
+  #genre-shelf .genre-column {
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+  }
+
+  #app.view-genre .genre-shelf-wrapper {
+    padding-top: 30px;
+    padding-bottom: 180px;
+  }
+
+  #app.view-genre #genre-view .shelf-wrapper {
+    align-items: flex-start;
+  }
+
+  #app.view-genre #genre-shelf {
+    transform: translateX(var(--shelf-offset, 0px)) scale(1.55);
+    transform-origin: top center;
+  }
+
+  .album-list {
+    max-height: calc(100vh - 125px);
+  }
+
+  #album-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #album-view .album-stage {
+    align-items: center;
+    justify-content: center;
+    padding-top: 8vh;
+    padding-bottom: 18vh;
+  }
+
+}
+
+/* Desktop tuning */
+@media (min-width: 900px) {
+  .album-stage {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .album-strip {
+    gap: 3vw;
+  }
+
+  .album-card {
+    flex: 0 0 260px;
+  }
+
+  .album-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
