@@ -113,7 +113,18 @@
 
             <!-- Panel 2: Current Tracks -->
             <div class="mixtape-panel mixtape-panel--tracks">
-              <div class="mixtape-section-header">Current Tracks</div>
+              <div class="mixtape-section-header">
+                <span>Current Mix Playlist</span>
+                <button
+                  type="button"
+                  class="mixtape-collapse-btn"
+                  data-panel="tracks"
+                  aria-expanded="true"
+                  aria-label="Toggle Current Tracks"
+                >
+                  <span class="mixtape-caret"></span>
+                </button>
+              </div>
               <div id="mixtape-tracks" class="mixtape-scroll">
                 <!-- playlist items injected here -->
               </div>
@@ -123,6 +134,15 @@
             <div class="mixtape-panel mixtape-panel--search">
               <div class="mixtape-section-header mixtape-search-header">
                 <span>Search</span>
+                <button
+                  type="button"
+                  class="mixtape-collapse-btn"
+                  data-panel="search"
+                  aria-expanded="true"
+                  aria-label="Toggle Search"
+                >
+                  <span class="mixtape-caret"></span>
+                </button>
               </div>
 
               <form id="mixtape-search-form" class="mixtape-search-row">

@@ -304,7 +304,7 @@ body {
   transform: translateY(-50%);
   pointer-events: none;
   opacity: 0.9;
-  font-size: 18px; /* Mix playlist drop-down arrow size */
+  font-size: 28px; /* Mix playlist drop-down arrow size */
   line-height: 1; /* Keep it vertically tidy */
 }
 
@@ -336,7 +336,7 @@ body {
 }
 
 .mixtape-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -396,10 +396,10 @@ body {
 /* Section headers */
 
 .mixtape-section-header {
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  opacity: 0.7;
+  opacity: 0.8;
   margin-bottom: 4px;
 
   padding-bottom: 6px;
@@ -733,3 +733,58 @@ body {
     display: block;
   }
 }
+
+/* ===== MIXTAPE PHASE 2: EXPAND / COLLAPSE (tracks + search) ===== */
+
+/* Make section headers able to hold title + toggle button */
+.mixtape-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Toggle button style */
+.mixtape-collapse-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+/* Chevron caret (same “vibe” as your dropdown arrow) */
+.mixtape-caret {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid rgba(255, 255, 255, 0.85); /* ▼ */
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+/* If expanded=true, flip caret to point up (▲) */
+.mixtape-collapse-btn[aria-expanded="true"] .mixtape-caret {
+  transform: rotate(180deg);
+}
+
+/* We'll put the "mode" class on .mixtape-wrapper */
+.mixtape-wrapper.panel-mode-both .mixtape-panel--tracks { flex: 1 1 0; }
+.mixtape-wrapper.panel-mode-both .mixtape-panel--search { flex: 1 1 0; }
+
+.mixtape-wrapper.panel-mode-tracks .mixtape-panel--tracks { flex: 3 1 0; }
+.mixtape-wrapper.panel-mode-tracks .mixtape-panel--search { flex: 0 0 auto; }
+
+.mixtape-wrapper.panel-mode-search .mixtape-panel--search { flex: 3 1 0; }
+.mixtape-wrapper.panel-mode-search .mixtape-panel--tracks { flex: 0 0 auto; }
+
+.mixtape-wrapper.panel-mode-none .mixtape-panel--tracks { flex: 0 0 auto; }
+.mixtape-wrapper.panel-mode-none .mixtape-panel--search { flex: 0 0 auto; }
+
+/* When a panel is collapsed, hide its contents (show header only) */
+.mixtape-panel.is-collapsed .mixtape-scroll { display: none !important; }
+.mixtape-panel.is-collapsed .mixtape-search-row { display: none !important; }

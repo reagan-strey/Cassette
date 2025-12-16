@@ -343,6 +343,11 @@ const state = {
     lastQuery: "",
     results: [], // search results
     mixStore: null, // playlists structure (loaded from localStorage)
+    // NEW: Phase 2 UI state
+    ui: {
+      tracksCollapsed: false,
+      searchCollapsed: false,
+    },
   },
 };
 
@@ -389,6 +394,13 @@ const mixtapeTracksEl = document.getElementById("mixtape-tracks");
 const mixtapeResultsEl = document.getElementById("mixtape-results");
 const mixtapeClearBtn = document.getElementById("mixtape-clear");
 
+// NEW: Phase 2 panel elements
+const mixtapeWrapperEl = document.querySelector("#mixtape-view .mixtape-wrapper");
+const mixtapeTracksPanelEl = document.querySelector("#mixtape-view .mixtape-panel--tracks");
+const mixtapeSearchPanelEl = document.querySelector("#mixtape-view .mixtape-panel--search");
+const mixtapeCollapseBtns = Array.from(
+  document.querySelectorAll("#mixtape-view .mixtape-collapse-btn")
+);
 
 const mixtapePlaylistSelectEl = document.getElementById(
   "mixtape-playlist-select"
@@ -1323,6 +1335,56 @@ function renderMixtapeResults() {
   });
 }
 
+function applyMixtapePanelLayout() {
+  if (!mixtapeWrapperEl || !mixtapeTracksPanelEl || !mixtapeSearchPanelEl) return;
+
+  const { tracksCollapsed, searchCollapsed } = state.mixtape.ui;
+
+  // Determine mode based on collapse flags
+  let mode = "both";
+  if (tracksCollapsed && searchCollapsed) mode = "none";
+  else if (!tracksCollapsed && searchCollapsed) mode = "tracks";
+  else if (tracksCollapsed && !searchCollapsed) mode = "search";
+
+  // Apply wrapper class
+  mixtapeWrapperEl.classList.remove(
+    "panel-mode-both",
+    "panel-mode-tracks",
+    "panel-mode-search",
+    "panel-mode-none"
+  );
+  mixtapeWrapperEl.classList.add(`panel-mode-${mode}`);
+
+  // Apply collapsed class to panels
+  mixtapeTracksPanelEl.classList.toggle("is-collapsed", tracksCollapsed);
+  mixtapeSearchPanelEl.classList.toggle("is-collapsed", searchCollapsed);
+
+  // Update button chevrons (aria-expanded controls CSS flip)
+  mixtapeCollapseBtns.forEach((btn) => {
+    const panel = btn.getAttribute("data-panel");
+    const expanded =
+      panel === "tracks" ? !tracksCollapsed :
+      panel === "search" ? !searchCollapsed :
+      true;
+
+    btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+  });
+}
+
+function initMixtapeCollapseButtons() {
+  if (!mixtapeCollapseBtns.length) return;
+
+  mixtapeCollapseBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const panel = btn.getAttribute("data-panel");
+
+      if (panel === "tracks") state.mixtape.ui.tracksCollapsed = !state.mixtape.ui.tracksCollapsed;
+      if (panel === "search") state.mixtape.ui.searchCollapsed = !state.mixtape.ui.searchCollapsed;
+
+      applyMixtapePanelLayout();
+    });
+  });
+}
 
 function renderMixtapeView() {
   ensureMixStore();
@@ -1330,6 +1392,7 @@ function renderMixtapeView() {
   renderMixSummary();
   mixtapeQueryEl.value = state.mixtape.lastQuery;
   renderMixtapeResults();
+    applyMixtapePanelLayout();
 }
 
 
@@ -1837,6 +1900,8 @@ stageEl.addEventListener("click", () => {
     spotifyPostAuthView || sessionStorage.getItem("spotify_post_auth_view");
 
   renderHomeShelf();
+
+  initMixtapeCollapseButtons();
 
   if (desiredView === "mixtape") {
     setView("mixtape");
