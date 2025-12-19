@@ -372,6 +372,61 @@ body {
   z-index: 1;
 }
 
+/*  */
+
+/* --- Mix Tape: playlist select + OUTSIDE caret button --- */
+.mixtape-playlist-selectbar{
+  display:flex;
+  align-items:center;
+  gap:10px;                 /* space between select pill and arrow */
+  width:100%;
+}
+
+.mixtape-select-wrap{
+  flex:1;
+  min-width:0;
+}
+
+/* Make the select look like your pill */
+#mixtape-playlist-select{
+  width:100%;
+  height:36px;
+  border-radius:999px;
+  padding:0 14px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(0,0,0,0.20);
+  color:rgba(255,255,255,0.95);
+  font-size:14px;
+  outline:none;
+  -webkit-appearance:none;  /* remove native iOS arrow */
+  appearance:none;
+}
+
+/* Outside caret button matches expand/collapse look */
+.mixtape-caret-btn{
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(0,0,0,0.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+
+/* reuse the same caret drawing you already use */
+.mixtape-caret-btn .mixtape-caret{
+  width:10px;
+  height:10px;
+  border-left:2px solid rgba(255,255,255,0.85);
+  border-top:2px solid rgba(255,255,255,0.85);
+  transform:rotate(-135deg);   /* points DOWN */
+  margin-top:-2px;
+}
+
+/*  */
+
 /* Stable caret using same triangle style as other expand/collapse icons */
 .mixtape-select-caret{
   position: absolute;
@@ -389,7 +444,6 @@ body {
   border-right-width: 6px;
   border-top-width: 7px;
 }
-
 
 /* Top panel (Mix info) auto size; middle & bottom panels share remaining space */
 

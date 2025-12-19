@@ -2062,61 +2062,36 @@ function escapeHtml(str) {
 
 // ===== APP INTRO TEXT (edit me) =====
 APP_INTRO_TEXT = `
-Remember when making a mix tape meant something? Not streaming playlists. An actual mix tape. When every song had a reason. And Side “A” mattered. You waited. You rewound. You made it perfect.
+Remember when sharing music was a story you made, not just something you streamed? Before playlists were a tap away, we made mix tapes. Carefully chosen songs… Endless rewinds… Perfect timing… And the order mattered. Side “A” had to start strong… and side “B” said something only the right person would understand. You didn’t just give someone music - you gave them a story… 
 
 They weren’t random, they were specifically crafted:
 
-- For friends you wanted to hype up…
-- For road trips that needed the perfect soundtrack…
-- For parties where the vibe had to be just right…
-- For love interests, where the tracks said more than words ever could
+-	For friends you wanted to hype up…
+-	For road trips that needed the perfect soundtrack…
+-	For parties where the vibe had to be just right…
+-	For love interests, where the tracks said more than words ever could 
 
+And mix tapes weren’t just created… they were earned: We obsessed over every detail, we dedicated endless hours, and, even though we can look back now with nostalgic fondness, we had to overcome and fight through some laughably challenging obsticals.
 
-And they weren’t just created, they were earned:
+-	Nothing was instant, we did it live, in real time. A 3-minute song took 3 minutes to record. We waited days for that perfect, rare song… And if we missed it, we waited some more.
+-	Timing was everything… and unforgiving. You don’t know anxiety until you hover over the RECORD button to get that last track. We didn’t guess, we anticipated. We studied DJ habits and the phrase, “This song goes out to…” was our cue to get ready.
+-	Cassette space was not unlimited. We calculated song lengths to maximize each side and planned the sequence like a complex puzzle… No dead space, no tracks cut short, and clean transitions… And when we got the last song on each side to end precisely as the tape clicked over, we walked a little taller that day.
+-	Mistakes were brutal… there was no “undo”. DJ talking… Radio static… Ghosts of old recordings bleeding through... Background noise (a cough, door slam, Mom yelling from another room)… We started over.
+-	We worked with the tools we had. No dual cassette deck? No problem… we just put two jamboxes next to each other. For live recordings, we barricaded our room and sat in silence for hours.
+-	This stuff was manual and it didn’t always work. Batteries ran out and tapes were eaten so we executed the pencil rewind with surgeon-level precision
+-	There was no internet or influencers. We actually listened to music and had to research trends, hot artists, and new releases. We knew what was cool by actually talking to real, live people. And song access was limited so Casey Kasem’s Top 40 was prime time for mixing.
+-	Giving someone a mix tape felt vulnerable—like handing over a piece of yourself. Even the labels and track lists were a big deal. They were handmade and carefully written, often rewritten to look “effortlessly cool.” Cross-outs were shameful… White-out was an admission of defeat…
 
-Nothing was instant
+This was serious business and we took pride in our work. Turns out, we were developing some serious grit, determination, and patience. Perhaps all part of why we look back so fondly now.
 
--	We did it live, in real time… A 3-minute song took 3 minutes to record
--	We waited days for that perfect, rare song… And if we missed it, we waited all over again
+Welcome back to the mix tape era. This app is a love letter to the 80’s and all of us who want that experience again. The feel is familiar:
 
-Timing was everything… and unforgiving
-
--	We hovered over the RECORD button with the anticipation of an Olympic sprinter… We didn’t guess, we anticipated…
--	We studied DJ habits and the phrase, “This song goes out to…” was our cue to get ready
-
-Cassette space was not unlimited
-
--	We calculated song lengths to maximize each side and planned the sequence like a complex puzzle… No dead space, no tracks cut short, and clean transitions…
--	And when we got the last song on each side to end precisely as the tape clicked over, we walked a little taller that day.
-
-We worked with the tools we had
-
--	No dual cassette deck? No problem… we just put two jamboxes next to each other…
--	For live recordings, we barricaded our room and sat in silence for hours
-
-Mistakes were permanent… (there was no “undo”)
--	DJ talking… Radio static… Background noise (a cough, door slam, Mom yelling from another room)… Ghosts of old recordings bleeding through... We started over.
-This stuff was manual and it didn’t always work
--	Batteries ran out and tapes were eaten…
--	We executed the pencil rewind with surgeon-level precision
-There was no internet or influencers
--	We actually listened to music and had to research trends, hot artists, and new releases
--	We knew what was cool by actually talking to real, live people
--	And song access was limited so Casey Kasem’s Top 40 was prime time for mixing
-Case labels were handmade (we didn’t have printers)
--	The handwriting had to look casual while clearly taking 40 minutes…
--	Track lists were carefully written, often rewritten to look “effortlessly cool.”
--	Cross-outs were shameful… White-out was an admission of defeat…
-
-This was serious business and we took pride in our work.
-
-Welcome back to the mix tape era. This app is a love letter to the 80’s and all of us who want that experience again. A time when creating a mix tape was an art form. The feel is familiar:
 -	A cassette rack you browse by genre
 -	Albums you “pull” from the shelf like you used to
 -	And a dedicated Mix Tape where you build something personal, intentional, and meaningful
 
-The modern mix tape, done right… Nostalgia without the friction…
-But now, instead of sitting by the radio, you’re crafting mixes with the full power of Spotify — without losing the soul of the experience. You can:
+But now, instead of sitting by the radio, you’re crafting mixes with the full power of Spotify — without losing the soul of the experience. This is the modern mix tape, done right. You can:
+
 -	Create multiple mix tapes — each with its own name and purpose
 -	Search songs, artists, and albums using Spotify’s catalog
 -	Add, reorder, and remove tracks until it feels just right
