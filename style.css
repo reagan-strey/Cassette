@@ -120,7 +120,7 @@ body {
 
 /* HOME: full rack */
 .home-shelf-wrapper {
-  padding-top: 180px;  /* Use to control Home View vertical alignment */
+  padding-top: 180px;  /* OLD Use to control Home View vertical alignment */
 }
 
 #home-shelf {
@@ -297,7 +297,7 @@ body {
 }
 
 .mixtape-select-wrap::after {
-  content: "▾";
+  content: "â–ľ";
   position: absolute;
   right: 12px; /* May need to increase with larger drop-down arrow */
   top: 50%;
@@ -651,7 +651,7 @@ body {
   }
 
   .home-shelf-wrapper {
-    padding-top: 60px;
+    padding-top: 180px;  /* Used to control Home View vertical alignment */
   }
 
   #home-shelf {
@@ -702,7 +702,7 @@ body {
   #album-view .album-stage {
     align-items: center;
     justify-content: center;
-    padding-top: 8vh;
+    padding-top: 21vh;  /* Used to control Album View vertical alignment */
     padding-bottom: 18vh;
   }
 
@@ -756,18 +756,18 @@ body {
   flex: 0 0 auto;
 }
 
-/* Chevron caret (same “vibe” as your dropdown arrow) */
+/* Chevron caret (same â€śvibeâ€ť as your dropdown arrow) */
 .mixtape-caret {
   width: 0;
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 7px solid rgba(255, 255, 255, 0.85); /* ▼ */
+  border-top: 7px solid rgba(255, 255, 255, 0.85); /* â–Ľ */
   transform: rotate(0deg);
   transition: transform 160ms ease;
 }
 
-/* If expanded=true, flip caret to point up (▲) */
+/* If expanded=true, flip caret to point up (â–˛) */
 .mixtape-collapse-btn[aria-expanded="true"] .mixtape-caret {
   transform: rotate(180deg);
 }
@@ -788,3 +788,167 @@ body {
 /* When a panel is collapsed, hide its contents (show header only) */
 .mixtape-panel.is-collapsed .mixtape-scroll { display: none !important; }
 .mixtape-panel.is-collapsed .mixtape-search-row { display: none !important; }
+
+
+
+/* ===== MENU + INTRO OVERLAYS ===== */
+.app-header { position: relative; }
+
+.menu-toggle{
+  position:absolute;
+  top:3px;
+  right:10px;
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  border:0;
+  padding:0;
+  z-index: 50;
+}
+.menu-toggle img{
+  width:36px;
+  height:auto;
+  display:block;
+  opacity:0.9;
+}
+.menu-toggle:active img{ opacity:0.75; }
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index: 999;
+  display:flex;
+  align-items:top;
+  justify-content:center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 16px;
+}
+.overlay-hidden{
+  display:none;
+}
+.overlay-panel{
+  width: min(92vw, 420px);
+  max-height: min(78vh, 680px);
+  background: rgba(0,0,0,0.86);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+.overlay-close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:30px;
+  height:30px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.75);
+  background: transparent;
+  color:#fff;
+  font-size: 22px;
+  line-height: 1;
+}
+.overlay-close:active{ opacity:0.75; }
+
+.menu-panel{
+  padding: 18px 16px 16px;
+}
+.menu-title{
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align:center;
+}
+.menu-content{
+  display:flex;
+  flex-direction:column;
+  gap: 5px;
+}
+.menu-section-label{
+  opacity:0.85;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.menu-spacer{ height: 6px; }
+.menu-item{
+  width:100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.75);
+  background: transparent;
+  color:#fff;
+  font-size: 12px;
+  text-align:left;
+}
+.menu-item:active{ opacity:0.75; }
+.menu-subitem{
+  font-size: 12px;
+  padding-left: 18px;
+  border-width: 1px;
+  opacity:0.92;
+}
+.menu-item-primary{
+  background: transparent;  /* Previous setting rgba(255,255,255,0.95); */
+  color: #fff; /* Previous setting #000; */
+  border: 1px solid #fff;
+  font-weight: 600;
+}
+
+.menu-item-primary:active{ opacity:0.85; }
+
+.menu-footer{
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.intro-panel{
+  padding: 18px 16px 16px;
+}
+.intro-title{
+  font-size: 18px;
+  font-weight: 600;
+  text-align:center;
+  margin: 4px 40px 12px;
+}
+.intro-body{
+  max-height: calc(min(78vh, 680px) - 80px);
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 6px 14px;
+  line-height: 1.2;
+  font-size: 16px;
+  opacity: 0.95;
+}
+.intro-body p{
+  margin: 0 0 12px 0; /* space after paragraphs */
+}
+.intro-body p:last-child{
+  margin-bottom: 0;
+}
+
+/* Lists inside intro: paragraph spacing stays on <p>, bullets are tight */
+.intro-body ul{
+  list-style-position: outside;
+  margin: 0 0 12px 0;     /* space after the whole list */
+  padding-left: 1.35em;   /* controls how far bullets + text are indented */
+}
+
+.intro-body li{
+  margin: 0;              /* no extra gap per bullet */
+  padding: 0;             /* IMPORTANT: do not add padding here */
+  line-height: 1.2;
+}
+
+/* Tiny separation between bullet rows (optional) */
+.intro-body li + li{
+  margin-top: 2px;
+}

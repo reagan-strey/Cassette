@@ -1891,13 +1891,164 @@ stageEl.addEventListener("click", () => {
   }
 });
 
+
+
+// ===== MENU + INTRO OVERLAYS =====
+let APP_INTRO_TEXT = ""; // filled at very bottom for easy editing
+
+function closeOverlay(overlayEl) {
+  if (!overlayEl) return;
+  overlayEl.classList.add("overlay-hidden");
+  overlayEl.setAttribute("aria-hidden", "true");
+}
+
+function openOverlay(overlayEl) {
+  if (!overlayEl) return;
+  overlayEl.classList.remove("overlay-hidden");
+  overlayEl.setAttribute("aria-hidden", "false");
+}
+
+function isOverlayOpen(overlayEl) {
+  return overlayEl && !overlayEl.classList.contains("overlay-hidden");
+}
+
+function closeMenu() {
+  const menu = document.getElementById("menu-overlay");
+  closeOverlay(menu);
+}
+
+function openMenu() {
+  const menu = document.getElementById("menu-overlay");
+  openOverlay(menu);
+}
+
+function toggleMenu() {
+  const menu = document.getElementById("menu-overlay");
+  if (isOverlayOpen(menu)) closeMenu();
+  else openMenu();
+}
+
+function showIntro() {
+  closeMenu();
+  const intro = document.getElementById("intro-overlay");
+  const introBody = document.getElementById("intro-body");
+  if (introBody) {
+  const blocks = String(APP_INTRO_TEXT || "")
+    .split(/\n\s*\n/g)
+    .map(b => b.trim())
+    .filter(Boolean);
+
+  const html = blocks.map((block) => {
+    const lines = block.split("\n").map(l => l.trim()).filter(Boolean);
+
+    const isList = lines.length > 1 && lines.every(l => /^[-•]\s+/.test(l));
+    if (isList) {
+      const items = lines.map(l => l.replace(/^[-•]\s+/, ""));
+      return `<ul>${items.map(it => `<li>${escapeHtml(it)}</li>`).join("")}</ul>`;
+    }
+
+    // Not a list → normal paragraph (but preserve single line breaks if any)
+    const safe = escapeHtml(block).replace(/\n/g, "<br>");
+    return `<p>${safe}</p>`;
+  }).join("");
+
+  introBody.innerHTML = html;
+}
+  openOverlay(intro);
+}
+
+function showAddToHomeInstructions() {
+  closeMenu();
+  openOverlay(document.getElementById("addhome-overlay"));
+}
+
+function initMenuOverlays() {
+  const menuToggle = document.getElementById("menu-toggle");
+  const menuClose = document.getElementById("menu-close");
+  const introClose = document.getElementById("intro-close");
+  const addhomeClose = document.getElementById("addhome-close");
+
+  const menuOverlay = document.getElementById("menu-overlay");
+  const introOverlay = document.getElementById("intro-overlay");
+  const addhomeOverlay = document.getElementById("addhome-overlay");
+
+  if (menuToggle) {
+    menuToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleMenu();
+    });
+  }
+  if (menuClose) menuClose.addEventListener("click", () => closeMenu());
+
+  // Optional: tapping the dark backdrop closes overlays (but taps inside panel do not)
+  [menuOverlay, introOverlay, addhomeOverlay].forEach((ov) => {
+    if (!ov) return;
+    ov.addEventListener("click", (e) => {
+      if (e.target === ov) closeOverlay(ov);
+    });
+  });
+
+  if (introClose) introClose.addEventListener("click", () => closeOverlay(introOverlay));
+  if (addhomeClose) addhomeClose.addEventListener("click", () => closeOverlay(addhomeOverlay));
+
+  // Menu actions
+  const homeBtn = document.getElementById("menu-home");
+  if (homeBtn) {
+    homeBtn.addEventListener("click", () => {
+      closeMenu();
+      setView("home");
+    });
+  }
+
+  document.querySelectorAll("[data-genre-id]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const gid = btn.getAttribute("data-genre-id");
+      const idx = GENRES.findIndex((g) => g.id === gid);
+      if (idx >= 0) {
+        closeMenu();
+        state.genreIndex = idx;
+        state.albumIndex = 0;
+        setView("genre");
+      }
+    });
+  });
+
+  const mixBtn = document.getElementById("menu-mixtape");
+if (mixBtn) {
+  mixBtn.addEventListener("click", async () => {
+    closeMenu();
+    hapticTap();
+    const ok = await ensureSpotifyAccessToken("mixtape");
+    if (ok) setView("mixtape");
+  });
+}
+
+  const addHomeBtn = document.getElementById("menu-add-home");
+  if (addHomeBtn) addHomeBtn.addEventListener("click", showAddToHomeInstructions);
+
+  const introBtn = document.getElementById("menu-intro");
+  if (introBtn) introBtn.addEventListener("click", showIntro);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
 // ===== INITIALIZE =====
 
 (async function init() {
   await spotifyHandleRedirectCallback();
 
-  const desiredView =
-    spotifyPostAuthView || sessionStorage.getItem("spotify_post_auth_view");
+  initMenuOverlays();
+
+  const desiredView = spotifyPostAuthView;
+  sessionStorage.removeItem("spotify_post_auth_view");
 
   renderHomeShelf();
 
@@ -1909,3 +2060,69 @@ stageEl.addEventListener("click", () => {
     setView("home");
   }
 })();
+
+// ===== APP INTRO TEXT (edit me) =====
+APP_INTRO_TEXT = `
+Remember when making a mix tape meant something? Not streaming playlists. An actual mix tape. When every song had a reason. And Side “A” mattered. You waited. You rewound. You made it perfect.
+
+They weren’t random, they were specifically crafted:
+
+- For friends you wanted to hype up…
+- For road trips that needed the perfect soundtrack…
+- For parties where the vibe had to be just right…
+- For love interests, where the tracks said more than words ever could
+
+
+And they weren’t just created, they were earned:
+
+Nothing was instant
+
+-	We did it live, in real time… A 3-minute song took 3 minutes to record
+-	We waited days for that perfect, rare song… And if we missed it, we waited all over again
+
+Timing was everything… and unforgiving
+
+-	We hovered over the RECORD button with the anticipation of an Olympic sprinter… We didn’t guess, we anticipated…
+-	We studied DJ habits and the phrase, “This song goes out to…” was our cue to get ready
+
+Cassette space was not unlimited
+
+-	We calculated song lengths to maximize each side and planned the sequence like a complex puzzle… No dead space, no tracks cut short, and clean transitions…
+-	And when we got the last song on each side to end precisely as the tape clicked over, we walked a little taller that day.
+
+We worked with the tools we had
+
+-	No dual cassette deck? No problem… we just put two jamboxes next to each other…
+-	For live recordings, we barricaded our room and sat in silence for hours
+
+Mistakes were permanent… (there was no “undo”)
+-	DJ talking… Radio static… Background noise (a cough, door slam, Mom yelling from another room)… Ghosts of old recordings bleeding through... We started over.
+This stuff was manual and it didn’t always work
+-	Batteries ran out and tapes were eaten…
+-	We executed the pencil rewind with surgeon-level precision
+There was no internet or influencers
+-	We actually listened to music and had to research trends, hot artists, and new releases
+-	We knew what was cool by actually talking to real, live people
+-	And song access was limited so Casey Kasem’s Top 40 was prime time for mixing
+Case labels were handmade (we didn’t have printers)
+-	The handwriting had to look casual while clearly taking 40 minutes…
+-	Track lists were carefully written, often rewritten to look “effortlessly cool.”
+-	Cross-outs were shameful… White-out was an admission of defeat…
+
+This was serious business and we took pride in our work.
+
+Welcome back to the mix tape era. This app is a love letter to the 80’s and all of us who want that experience again. A time when creating a mix tape was an art form. The feel is familiar:
+-	A cassette rack you browse by genre
+-	Albums you “pull” from the shelf like you used to
+-	And a dedicated Mix Tape where you build something personal, intentional, and meaningful
+
+The modern mix tape, done right… Nostalgia without the friction…
+But now, instead of sitting by the radio, you’re crafting mixes with the full power of Spotify — without losing the soul of the experience. You can:
+-	Create multiple mix tapes — each with its own name and purpose
+-	Search songs, artists, and albums using Spotify’s catalog
+-	Add, reorder, and remove tracks until it feels just right
+-	And when it’s done… Save your mix directly to your own Spotify account. No exporting. No copying links. Your mix becomes a real Spotify playlist — ready to listen to, revisit, and share.
+
+If you grew up in the cassette era, this will feel instantly familiar. If you didn’t — this is your chance to experience why mix tapes were such a big deal. The best ones had a name. They had a mood. They had a reason.
+
+It’s time to make a mix tape again.`.trim();
