@@ -290,28 +290,106 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.12); /* subtle panel outline */
 }
 
-.mixtape-select-wrap {
+/* Make the playlist select take full width and allow a stable caret */
+.mixtape-playlist-row{
+  width: 100%;
+}
+
+/* Row that holds the pill (select) + the outside arrow button */
+.mixtape-playlist-selectbar{
+  display:flex;
+  align-items:center;
+  gap:10px;              /* space between pill and arrow button */
+  width:100%;
+}
+
+/* Make sure the select pill can shrink and not collide with the arrow */
+.mixtape-select-wrap{
+  flex:1;
+  min-width:0;
+}
+
+/* Ensure the select text is visible on iPhone (white text) */
+.mixtape-select-wrap select{
+  width:100%;
+  color:#fff;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.22);
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:15px;
+  line-height:1.1;
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+/* Outside arrow button — matches your expand/collapse circle style */
+.mixtape-caret-btn{
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.22);
+  background:rgba(0,0,0,0.25);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  line-height:1;
+}
+
+/* Optional: slight tap feedback */
+.mixtape-caret-btn:active{
+  transform:scale(0.98);
+}
+
+.mixtape-select-wrap{
   position: relative;
   flex: 1;
   min-width: 0;
 }
 
-.mixtape-select-wrap::after {
-  content: "â–ľ";
-  position: absolute;
-  right: 12px; /* May need to increase with larger drop-down arrow */
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  opacity: 0.9;
-  font-size: 28px; /* Mix playlist drop-down arrow size */
-  line-height: 1; /* Keep it vertically tidy */
+/* Make room for the caret on the right */
+.mixtape-select-wrap select{
+  width: 100%;
+  min-width: 0;
+
+  padding: 8px 12px;
+  padding-right: 44px;            /* room for caret */
+  border-radius: 999px;
+
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.40);
+  color: #f5f5f5;
+
+  font-size: 12px;
+  line-height: 1.2;
+
+  -webkit-appearance: none;
+  appearance: none;
+
+  position: relative;
+  z-index: 1;
 }
 
-#mixtape-playlist-select {
-  width: 100%;
-  padding-right: 28px; /* room for the arrow - May need to increase with larger drop-down arrow */
+/* Stable caret using same triangle style as other expand/collapse icons */
+.mixtape-select-caret{
+  position: absolute;
+  right: 14px;          /* tweak: aligns with other carets */
+  top: 40%;
+  transform: translateY(-50%);
+  pointer-events: none; /* lets taps go to the <select> */
+  opacity: 0.9;
+  z-index: 2;
 }
+
+/* Optional: slightly larger caret (edit to taste) */
+.mixtape-select-caret{
+  border-left-width: 6px;
+  border-right-width: 6px;
+  border-top-width: 7px;
+}
+
 
 /* Top panel (Mix info) auto size; middle & bottom panels share remaining space */
 
@@ -354,17 +432,6 @@ body {
   opacity: 0.75;
 }
 
-#mixtape-playlist-select {
-  flex: 1;
-  min-width: 0;
-  padding: 6px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(0, 0, 0, 0.4);
-  color: #f5f5f5;
-  font-size: 12px;
-}
-
 /* Playlist actions row */
 
 .mixtape-playlist-actions {
@@ -372,7 +439,7 @@ body {
   flex-wrap: wrap;
   gap: 4px;
   margin-top: 6px;
-  justify-content: flex-end; /* right-align buttons */
+  justify-content: flex-start; /* left-align buttons */
 }
 
 .mixtape-small-btn {
@@ -756,15 +823,22 @@ body {
   flex: 0 0 auto;
 }
 
-/* Chevron caret (same â€śvibeâ€ť as your dropdown arrow) */
-.mixtape-caret {
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 7px solid rgba(255, 255, 255, 0.85); /* â–Ľ */
-  transform: rotate(0deg);
-  transition: transform 160ms ease;
+/* Visible caret icon inside the round expand/collapse buttons */
+.mixtape-caret{
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  line-height: 14px;
+  transform-origin: 50% 50%;
+}
+
+/* draw the caret using a glyph */
+.mixtape-caret::before{
+  content: "▾";
+  display: block;
+  font-size: 16px;
+  line-height: 14px;
+  color: rgba(255,255,255,0.9);
 }
 
 /* If expanded=true, flip caret to point up (â–˛) */

@@ -405,6 +405,15 @@ const mixtapeCollapseBtns = Array.from(
 const mixtapePlaylistSelectEl = document.getElementById(
   "mixtape-playlist-select"
 );
+const mixtapeSelectOpenBtn = document.getElementById("mixtape-select-open");
+
+if (mixtapeSelectOpenBtn && mixtapePlaylistSelectEl) {
+  mixtapeSelectOpenBtn.addEventListener("click", () => {
+    // Focus then click the native select (works on desktop; iOS will still show native picker)
+    mixtapePlaylistSelectEl.focus({ preventScroll: true });
+    mixtapePlaylistSelectEl.click();
+  });
+}
 const mixtapeNewPlaylistBtn = document.getElementById(
   "mixtape-new-playlist"
 );
@@ -1314,17 +1323,7 @@ function renderMixtapeResults() {
       });
       actions.appendChild(addBtn);
 
-      const openBtn = document.createElement("button");
-      openBtn.type = "button";
-      openBtn.className = "nav-pill";
-      openBtn.textContent = "Open";
-      openBtn.addEventListener("click", () => {
-        if (item.url) window.open(item.url, "_blank");
-      });
-      actions.appendChild(openBtn);
-
-      row.appendChild(actions);
-    } else {
+      
       // artist / album -> open on click
       row.addEventListener("click", () => {
         if (item.url) window.open(item.url, "_blank");

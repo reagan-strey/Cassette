@@ -5,11 +5,13 @@
 <head>
 <meta charset="utf-8"/>
 <title>Cassette Rack</title>
+
 <!-- iOS “Add to Home Screen” support -->
 <link href="apple-touch-icon.png" rel="apple-touch-icon"/>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="Cassette Rack" name="apple-mobile-web-app-title"/>
+
 <!-- iPhone-first viewport -->
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <link href="style.css" rel="stylesheet"/>
@@ -23,40 +25,57 @@
         </div>
 <button aria-label="Menu" class="menu-toggle" id="menu-toggle"><img alt="Menu" src="Menu Icon.png"/></button></header>
 <main class="app-main">
-<!-- HOME VIEW: full wall -->
+
+  <!-- HOME VIEW: full wall -->
 <section class="view" id="home-view">
 <div class="shelf-wrapper home-shelf-wrapper">
 <div class="shelf" id="home-shelf"></div>
 </div>
 </section>
+
 <!-- GENRE VIEW: zoomed column with neighbors -->
 <section class="view" id="genre-view">
 <div class="shelf-wrapper genre-shelf-wrapper">
 <div class="shelf" id="genre-shelf"></div>
 </div>
 </section>
+
 <!-- ALBUM VIEW: cassette face carousel -->
 <section class="view" id="album-view">
 <div class="album-stage">
 <div class="album-strip" id="album-strip"></div>
 </div>
 </section>
+
 <!-- MIX TAPE VIEW: Spotify search + local mixes -->
 <section class="view" id="mixtape-view">
 <div class="mixtape-wrapper">
-<!-- Panel 1: Mix Tape (playlist selector + actions) -->
+
+  <!-- Panel 1: Mix Tape (playlist selector + actions) -->
 <div class="mixtape-panel mixtape-panel--mix">
 <div class="mixtape-header-row">
 <div class="mixtape-title">Mix Tape</div>
 </div>
+
 <div class="mixtape-playlist-row">
-<label class="mixtape-playlist-label" for="mixtape-playlist-select">
-                  Mix:
-                </label>
-<div class="mixtape-select-wrap">
-<select id="mixtape-playlist-select"></select>
+  <div class="mixtape-playlist-selectbar">
+    <div class="mixtape-select-wrap">
+      <!-- IMPORTANT: ID must match script.js -->
+      <select id="mixtape-playlist-select"></select>
+    </div>
+
+    <!-- Arrow OUTSIDE the pill (label is iPhone-safe) -->
+    <label
+      id="mixtape-select-open"
+      class="mixtape-caret-btn"
+      for="mixtape-playlist-select"
+      aria-label="Choose mix tape"
+    >
+      ▾
+    </label>
+  </div>
 </div>
-</div>
+
 <div class="mixtape-playlist-actions">
 <button class="nav-pill mixtape-small-btn" id="mixtape-new-playlist" type="button">
                   New
