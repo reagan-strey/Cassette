@@ -628,10 +628,11 @@ body {
 .mixtape-text {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
 .mixtape-track {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -640,18 +641,34 @@ body {
   opacity: 0.75;
 }
 
-/* Buttons inside rows */
-
-.mixtape-actions {
-  display: flex;
-  flex-direction: row; /* side-by-side instead of stacked */
-  gap: 4px;
+.mixtape-track,
+.mixtape-meta{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.mixtape-actions .nav-pill {
+
+/* Buttons inside rows */
+
+.mixtape-actions{
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+
+  /* KEY FIX: never let the action buttons shrink away */
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.mixtape-actions .nav-pill{
   font-size: 10px;
-  padding: 3px 6px;
-  min-width: 0;
+  padding: 3px 8px;
+
+  /* KEY FIX: keep buttons measurable/clickable */
+  min-width: 4px;
 }
 
 .mixtape-open {

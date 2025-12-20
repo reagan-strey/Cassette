@@ -1293,13 +1293,16 @@ function renderMixtapeResults() {
       const actions = document.createElement("div");
       actions.className = "mixtape-actions";
 
+      // ADD button
       const addBtn = document.createElement("button");
       addBtn.type = "button";
       addBtn.className = "nav-pill";
       addBtn.textContent = "Add";
-      addBtn.addEventListener("click", () => {
+      addBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent row click behavior
         const store = getCurrentMixStore();
         const playlist = getCurrentPlaylist();
+
         if (playlist.tracks.length >= MAX_TRACKS_PER_MIX) {
           alert(
             `This mix already has ${MAX_TRACKS_PER_MIX} tracks. ` +
@@ -1307,6 +1310,7 @@ function renderMixtapeResults() {
           );
           return;
         }
+
         playlist.tracks.push({
           id: item.id,
           title: item.title,
@@ -1317,18 +1321,33 @@ function renderMixtapeResults() {
           durationMs: item.durationMs || 0,
           previewUrl: item.previewUrl || null,
         });
+
         saveMixStore(store);
         renderMixSummary();
         renderMixtapeResults();
       });
       actions.appendChild(addBtn);
 
-      
-      // artist / album -> open on click
+      // OPEN button
+      const openBtn = document.createElement("button");
+      openBtn.type = "button";
+      openBtn.className = "nav-pill";
+      openBtn.textContent = "Open";
+      openBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent row click behavior
+        if (item.url) window.open(item.url, "_blank");
+      });
+      actions.appendChild(openBtn);
+
+      // IMPORTANT: this is what was missing
+      row.appendChild(actions);
+    } else {
+      // artist / album -> open on click (whole row acts like a link)
       row.addEventListener("click", () => {
         if (item.url) window.open(item.url, "_blank");
       });
     }
+
 
     mixtapeResultsEl.appendChild(row);
   });
@@ -2062,7 +2081,7 @@ function escapeHtml(str) {
 
 // ===== APP INTRO TEXT (edit me) =====
 APP_INTRO_TEXT = `
-Remember when sharing music was a story you made, not just something you streamed? Before playlists were a tap away, we made mix tapes. Carefully chosen songs… Endless rewinds… Perfect timing… And the order mattered. Side “A” had to start strong… and side “B” said something only the right person would understand. You didn’t just give someone music - you gave them a story… 
+Remember when sharing music was so much more than sending a link to a playlist. Before an algorithm made playlists, we made mix tapes. Carefully chosen songs… Endless rewinds… Perfect timing… And the order mattered. Side “A” had to start strong… and side “B” said something only the right person would understand. You didn’t just give someone music... you gave them a story. 
 
 They weren’t random, they were specifically crafted:
 
@@ -2071,7 +2090,7 @@ They weren’t random, they were specifically crafted:
 -	For parties where the vibe had to be just right…
 -	For love interests, where the tracks said more than words ever could 
 
-And mix tapes weren’t just created… they were earned: We obsessed over every detail, we dedicated endless hours, and, even though we can look back now with nostalgic fondness, we had to overcome and fight through some laughably challenging obsticals.
+And mix tapes weren’t just created… they were earned: We obsessed over every detail, we dedicated endless hours, and, even though we can look back now with nostalgic fondness, we had to overcome and fight through some laughably challenging obstacles.
 
 -	Nothing was instant, we did it live, in real time. A 3-minute song took 3 minutes to record. We waited days for that perfect, rare song… And if we missed it, we waited some more.
 -	Timing was everything… and unforgiving. You don’t know anxiety until you hover over the RECORD button to get that last track. We didn’t guess, we anticipated. We studied DJ habits and the phrase, “This song goes out to…” was our cue to get ready.
@@ -2079,10 +2098,10 @@ And mix tapes weren’t just created… they were earned: We obsessed over every
 -	Mistakes were brutal… there was no “undo”. DJ talking… Radio static… Ghosts of old recordings bleeding through... Background noise (a cough, door slam, Mom yelling from another room)… We started over.
 -	We worked with the tools we had. No dual cassette deck? No problem… we just put two jamboxes next to each other. For live recordings, we barricaded our room and sat in silence for hours.
 -	This stuff was manual and it didn’t always work. Batteries ran out and tapes were eaten so we executed the pencil rewind with surgeon-level precision
--	There was no internet or influencers. We actually listened to music and had to research trends, hot artists, and new releases. We knew what was cool by actually talking to real, live people. And song access was limited so Casey Kasem’s Top 40 was prime time for mixing.
+-	There was no internet or influencers. We actually listened to music and had to research trends, hot artists, and new releases. We knew what was cool by talking to real, live people. And song access was limited so Casey Kasem’s Top 40 was prime time for mixing.
 -	Giving someone a mix tape felt vulnerable—like handing over a piece of yourself. Even the labels and track lists were a big deal. They were handmade and carefully written, often rewritten to look “effortlessly cool.” Cross-outs were shameful… White-out was an admission of defeat…
 
-This was serious business and we took pride in our work. Turns out, we were developing some serious grit, determination, and patience. Perhaps all part of why we look back so fondly now.
+This was serious business and we took pride in our work. Turns out, we were developing some serious grit, determination, and patience along the way. Perhaps all part of why we look back so fondly now.
 
 Welcome back to the mix tape era. This app is a love letter to the 80’s and all of us who want that experience again. The feel is familiar:
 
