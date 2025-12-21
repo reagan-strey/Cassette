@@ -431,7 +431,7 @@ body {
 .mixtape-select-caret{
   position: absolute;
   right: 14px;          /* tweak: aligns with other carets */
-  top: 40%;
+  top: 50%;
   transform: translateY(-50%);
   pointer-events: none; /* lets taps go to the <select> */
   opacity: 0.9;
