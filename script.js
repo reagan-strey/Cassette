@@ -1442,22 +1442,40 @@ async function fetchSpotifySearch(query) {
   );
 
   if (!resp.ok) {
-    console.error(
-      "Spotify search error:",
-      resp.status,
-      await resp.text()
-    );
-    alert(
-      "Spotify search error (" +
-        resp.status +
-        "). Please try again, or re-login to Mix."
-    );
-    return {
-      tracks: { items: [] },
-      artists: { items: [] },
-      albums: { items: [] },
-    };
+  let errMsg = "";
+  try {
+    const errJson = await resp.json();
+    errMsg = errJson?.error?.message ? `\n\nSpotify says: ${errJson.error.message}` : "";
+  } catch (e) {
+    // ignore
   }
+
+  if (resp.status === 403) {
+    alert(
+      "Spotify search error (403)." +
+        "\n\nYour Spotify account is not added to this app in the Spotify Developer Dashboard (Development Mode)." +
+        "\nAsk Reagan to add your Spotify email, then re-login to Search and Mix." +
+        errMsg
+    );
+  } else if (resp.status === 401) {
+    alert(
+      "Spotify session expired (401). Please re-login to Mix." +
+        errMsg
+    );
+  } else {
+    alert(
+      "Spotify search error (" + resp.status + "). Please try again, or re-login to Mix." +
+        errMsg
+    );
+  }
+
+  return {
+    tracks: { items: [] },
+    artists: { items: [] },
+    albums: { items: [] },
+  };
+}
+
 
   const data = await resp.json();
   // data has shape { tracks: {items: []}, artists: {items: []}, albums: {items: []} }
