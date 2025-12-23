@@ -2101,38 +2101,37 @@ function escapeHtml(str) {
 APP_INTRO_TEXT = `
 Before algorithms decided what song we should hear next, we made mix tapes. Carefully chosen songs. Perfect timing. And the order mattered. Side “A” had to start strong… and side “B” said something only the right person would understand.
 
-You didn’t just give someone music, you gave them a story. They weren’t random, they were intentional (a hint, a confession, a memory, a hope) specifically crafted:
+You didn’t just give someone music, you gave them a story. They weren’t random, they were intentional (a hint, a confession, a memory, a hope). They were specifically crafted:
 
 -	For friends you wanted to hype up
 -	For road trips that needed the perfect soundtrack
--	For parties where the vibe couldn't be trusted to chance
--	For love interests, where the tracks said more than words ever could 
+-	For parties where the vibe couldn’t be trusted to chance
+-	For love interests, where the tracks said more than words ever could
 
-And mix tapes weren’t just created… they were earned:
+For those who know, mix tapes weren’t just created… they were earned. This was serious business and we took pride in it. We obsessed over every detail, we dedicated endless hours, and we fought through some laughably challenging obstacles. Maybe that’s why it still means so much.
 
 -	Nothing was instant, we did it live, in real time. A three-minute song took three minutes to record. We waited days for the right song… if we missed it, we waited some more.
--	Timing was everything… and unforgiving. You don’t know anxiety until you hover over the RECORD button to get that last track. We didn’t guess, we anticipated. We studied DJ habits and the phrase, “This song goes out to…” was our cue to get ready.
--	Cassette space was not unlimited. We calculated song lengths to maximize each side and planned the sequence like a complex puzzle. No dead space, no tracks cut short, and only clean transitions. And, when we got the last song on each side to end precisely as the tape clicked over, we walked a little taller that day.
--	Mistakes were brutal, there was no “undo”. DJ talking. Radio static. Ghosts of old recordings bleeding through. A cough. A door slam. Mom yelling from another room… We started over.
--	We worked with the tools we had. No dual cassette deck? No problem - we put two jamboxes next to each other. For live recordings, we barricaded our rooms and sat in silence, afraid to even move.
+-	Timing was everything… and unforgiving. You don’t know anxiety until you hover over the RECORD button to get that last track. We didn’t guess, we anticipated.
+-	Cassette space was not unlimited. We calculated song lengths to maximize each side and planned the sequence like a complex puzzle. No dead space, no tracks cut short, and only clean transitions.
+-	Mistakes were brutal, there was no “undo”. DJ talking. A door slam. Ghosts of old recordings bleeding through. Mom yelling from another room. We started over.
+-	We worked with the tools we had. No dual cassette deck? No problem - we would just put two jamboxes next to each other. For live recordings, we barricaded our rooms and sat in silence.
 -	This stuff was manual and it didn’t always work. Batteries died… Tapes were eaten… And when that happened, we executed the sacred pencil rewind with surgeon-level precision.
--	There was no internet or influencers. We actually listened to music and had to research trends, hot artists, and new releases. We knew what was cool by talking to real, live people. Access was limited, so Casey Kasem’s Top 40 was prime time for mixing. 
+-	There was no internet or influencers. We actually listened to music and researched trends, hot artists, and new releases. Access was limited, so Casey Kasem’s Top 40 was prime time for mixing. 
 -	Giving someone a mix tape felt vulnerable - like handing over a piece of yourself. Even the labels and track lists were a big deal. They were hand-written, and rewritten until it looked effortlessly cool. Cross-outs were shameful and white-out was an admission of defeat.
 
-This was serious business and we took pride in it. We obsessed over every detail, we dedicated endless hours, and we fought through some laughably challenging obstacles. Maybe that’s why it still means so much.
 
-So welcome back to the mix tape era. This app is a love letter to the 80’s and to everyone who remembers what it felt like and wants to experience it again.
+So… welcome back to the mix tape era. This app is a love letter to everyone who remembers and wants to experience it again.
 
 -	A cassette rack you browse by genre
 -	Albums you pull from the shelf like you used to
 -	And a dedicated Mix Tape where you build something personal, intentional, and meaningful
 
-But now, instead of sitting by the radio, you’re crafting mixes with the full power of Spotify — without losing the soul of the experience. This is the modern mix tape, done right.
+But now, instead of sitting by the radio, you’re crafting mixes with the full power of Spotify — without losing the soul of the experience.
 
--	Create multiple mix tapes — because every mix has a purpose
+-	Create multiple mix tapes
 -	Search songs, artists, and albums using Spotify’s catalog
 -	Add, reorder, and remove tracks until it feels just right
--	And when it’s done, save your mix directly to your Spotify account. No exporting. No copying links. Your mix becomes a real Spotify playlist — ready to listen to, revisit, and share.
+-	And when it’s done, your mix becomes a real Spotify playlist — ready to listen to, revisit, and share.
 
 If you grew up in the cassette era, this will feel instantly familiar - like coming home. If you didn’t, this is your chance to experience why mix tapes were such a big deal. The best ones had a name. They had a mood. They had a reason.
 
