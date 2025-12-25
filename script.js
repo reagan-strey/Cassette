@@ -1928,12 +1928,18 @@ stageEl.addEventListener("click", () => {
 });
 
 
-
 // ===== MENU + INTRO OVERLAYS =====
 let APP_INTRO_TEXT = ""; // filled at very bottom for easy editing
 
+
 function closeOverlay(overlayEl) {
   if (!overlayEl) return;
+
+  // If closing the intro overlay, stop & reset the intro audio
+  if (overlayEl.id === "intro-overlay") {
+    stopAndHideIntroAudio();
+  }
+
   overlayEl.classList.add("overlay-hidden");
   overlayEl.setAttribute("aria-hidden", "true");
 }
@@ -1991,6 +1997,7 @@ function showIntro() {
   introBody.innerHTML = html;
 }
   openOverlay(intro);
+  showIntroAudioBar();
 }
 
 function showAddToHomeInstructions() {
@@ -2020,11 +2027,19 @@ function initMenuOverlays() {
   [menuOverlay, introOverlay, addhomeOverlay].forEach((ov) => {
     if (!ov) return;
     ov.addEventListener("click", (e) => {
-      if (e.target === ov) closeOverlay(ov);
+      if (e.target === ov) {
+        if (ov.id === "intro-overlay" && window.__introAudio) window.__introAudio.hideBarAndStop();
+        closeOverlay(ov);
+      }
     });
+
   });
 
-  if (introClose) introClose.addEventListener("click", () => closeOverlay(introOverlay));
+  if (introClose) introClose.addEventListener("click", () => {
+    if (window.__introAudio) window.__introAudio.hideBarAndStop();
+    closeOverlay(introOverlay);
+  });
+
   if (addhomeClose) addhomeClose.addEventListener("click", () => closeOverlay(addhomeOverlay));
 
   // Menu actions
@@ -2076,12 +2091,11 @@ function escapeHtml(str) {
 }
 
 
-// ===== INITIALIZE =====
-
 (async function init() {
   await spotifyHandleRedirectCallback();
 
   initMenuOverlays();
+  initIntroAudioMiniPlayer();
 
   const desiredView = spotifyPostAuthView;
   sessionStorage.removeItem("spotify_post_auth_view");
@@ -2096,6 +2110,121 @@ function escapeHtml(str) {
     setView("home");
   }
 })();
+
+
+// =============================
+// INTRO AUDIO MINI PLAYER (Option A)
+// =============================
+const INTRO_AUDIO_SOURCES = {
+  app: "App-Intro.mp3",
+  challenges: "Mix-Challenges.mp3",
+};
+
+let introAudioRefs = null;
+let introAudioActiveKey = "app";
+
+function initIntroAudioMiniPlayer() {
+  const bar = document.getElementById("intro-audio-bar");
+  const audio = document.getElementById("intro-audio");
+
+  const tabApp = document.getElementById("intro-audio-tab-app");
+  const tabChallenges = document.getElementById("intro-audio-tab-challenges");
+
+  const btnPlay = document.getElementById("intro-audio-play");
+  const btnRewind = document.getElementById("intro-audio-rewind");
+  const btnClose = document.getElementById("intro-audio-close");
+
+  if (!bar || !audio || !tabApp || !tabChallenges || !btnPlay || !btnRewind || !btnClose) {
+    console.warn("Intro audio player elements not found. Check index.html IDs.");
+    return;
+  }
+
+  introAudioRefs = { bar, audio, tabApp, tabChallenges, btnPlay, btnRewind, btnClose };
+
+  function setActiveTab(key) {
+    introAudioActiveKey = key;
+
+    tabApp.classList.toggle("is-active", key === "app");
+    tabChallenges.classList.toggle("is-active", key === "challenges");
+
+    // Load the selected audio (do NOT autoplay)
+    audio.src = INTRO_AUDIO_SOURCES[key];
+    audio.load();
+
+    // Reset button label
+    btnPlay.textContent = "Play";
+  }
+
+  function updatePlayLabel() {
+    btnPlay.textContent = audio.paused ? "Play" : "Pause";
+  }
+
+  tabApp.addEventListener("click", () => {
+    showIntroAudioBar();
+    setActiveTab("app");
+  });
+
+  tabChallenges.addEventListener("click", () => {
+    showIntroAudioBar();
+    setActiveTab("challenges");
+  });
+
+  btnPlay.addEventListener("click", async () => {
+    showIntroAudioBar();
+    if (!audio.src) {
+      setActiveTab(introAudioActiveKey);
+    }
+
+    try {
+      if (audio.paused) {
+        await audio.play(); // user-initiated -> allowed
+      } else {
+        audio.pause();
+      }
+      updatePlayLabel();
+    } catch (err) {
+      console.warn("Intro audio play failed:", err);
+      alert("Audio couldn’t play. Try again.");
+    }
+  });
+
+  btnRewind.addEventListener("click", () => {
+    if (!audio.src) return;
+    audio.currentTime = 0;
+  });
+
+  btnClose.addEventListener("click", () => {
+    stopAndHideIntroAudio();
+  });
+
+  audio.addEventListener("play", updatePlayLabel);
+  audio.addEventListener("pause", updatePlayLabel);
+  audio.addEventListener("ended", updatePlayLabel);
+
+  // Default selection (no autoplay)
+  setActiveTab("app");
+}
+
+function showIntroAudioBar() {
+  if (!introAudioRefs) return;
+  introAudioRefs.bar.classList.remove("intro-audio-bar--hidden");
+}
+
+function stopAndHideIntroAudio() {
+  if (!introAudioRefs) return;
+
+  const { bar, audio, btnPlay } = introAudioRefs;
+
+  try {
+    audio.pause();
+    audio.currentTime = 0;
+  } catch (_) {}
+
+  btnPlay.textContent = "Play";
+  bar.classList.add("intro-audio-bar--hidden");
+}
+
+
 
 // ===== APP INTRO TEXT (edit me) =====
 APP_INTRO_TEXT = `

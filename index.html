@@ -159,7 +159,25 @@
   <div class="overlay-panel intro-panel">
     <button aria-label="Close intro" class="overlay-close" id="intro-close" type="button">×</button>
     <div class="intro-title">You know Mix Tapes miss you too, right?</div>
+
     <div class="intro-body" id="intro-body"></div>
+
+    <!-- Sticky mini player (inside the overlay) -->
+    <div class="intro-audio-bar intro-audio-bar--hidden" id="intro-audio-bar">
+      <div class="intro-audio-tabs">
+        <button class="nav-pill intro-audio-tab" id="intro-audio-tab-app" type="button">App Intro</button>
+        <button class="nav-pill intro-audio-tab" id="intro-audio-tab-challenges" type="button">Mix Challenges</button>
+      </div>
+
+      <div class="intro-audio-controls">
+        <button class="nav-pill intro-audio-btn" id="intro-audio-play" type="button">Play</button>
+        <button class="nav-pill intro-audio-btn" id="intro-audio-rewind" type="button">Rewind</button>
+        <button class="nav-pill intro-audio-btn" id="intro-audio-close" type="button">Close</button>
+      </div>
+
+      <!-- separate audio element from mixtape previews -->
+      <audio id="intro-audio" preload="none"></audio>
+    </div>
   </div>
 </div>
 

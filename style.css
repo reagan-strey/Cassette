@@ -1032,24 +1032,34 @@ body {
   opacity: 0.85;
 }
 
+
+/* ===== INTRO OVERLAY: STICKY MINI PLAYER ===== */
+
 .intro-panel{
   padding: 18px 16px 16px;
+  display: flex;
+  flex-direction: column;
 }
 .intro-title{
   font-size: 18px;
   font-weight: 600;
   text-align:center;
   margin: 4px 40px 12px;
+  flex: 0 0 auto;
 }
+
+/* Body becomes the scroll area and *shares space* with the audio bar */
 .intro-body{
-  max-height: calc(min(78vh, 680px) - 80px);
-  overflow-y:auto;
+  flex: 1 1 auto;              /* key: take remaining height */
+  min-height: 0;               /* key: allows scrolling inside flex children */
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 8px 6px 14px;
+  padding: 8px 6px 86px;       /* IMPORTANT: bottom padding so text doesn’t hide behind the sticky bar */
   line-height: 1.2;
   font-size: 16px;
   opacity: 0.95;
 }
+
 .intro-body p{
   margin: 0 0 12px 0; /* space after paragraphs */
 }
@@ -1073,4 +1083,55 @@ body {
 /* Tiny separation between bullet rows (optional) */
 .intro-body li + li{
   margin-top: 2px;
+}
+
+/* Sticky mini player inside the overlay */
+.intro-audio-bar{
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin-top: 10px;
+  padding: 10px 8px 12px;
+
+  background: rgba(0,0,0,0.92);
+  border-top: 1px solid rgba(255,255,255,0.18);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+ 
+  z-index: 5;
+}
+
+.intro-audio-bar--hidden{
+  display: none;
+}
+
+.intro-audio-tabs{
+  display: flex;
+  gap: 8px;
+}
+
+.intro-audio-controls{
+  display: flex;
+  gap: 8px;
+}
+
+.intro-audio-tab{
+  flex: 1;
+  text-align: center;
+}
+
+.intro-audio-tab.is-active{
+  background: rgba(255,255,255,0.92);
+  color: #000;
+  border-color: rgba(255,255,255,0.92);
+  font-weight: 600;
+}
+
+.intro-audio-btn{
+  flex: 1 1 0;
+  text-align: center;
 }
